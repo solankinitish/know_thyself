@@ -14,3 +14,7 @@ class LLMClient:
     def chat(self, message: str) -> str:
         response = self.chain.invoke({"user_message": message})
         return response.content
+    
+    def generate(self, messages: list) -> str:
+        response = self.llm.invoke(messages)
+        return response.content
