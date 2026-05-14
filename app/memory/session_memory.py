@@ -11,7 +11,6 @@ class SessionMemory:
             return_messages=True
         )
             
-    
     def get_history(self):
         history = self.memory.load_memory_variables({})
         return history['history']

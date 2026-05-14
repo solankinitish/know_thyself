@@ -2,8 +2,8 @@ from app.tracks.base_track import BaseTrack
 
 
 class HabitTrack(BaseTrack):
-    def __init__(self):
-        super().__init__(system_prompt="""You are an experienced Psychotherapist and Counsellor with expertise in Life building, habit formation system,
+    def __init__(self, user_id):
+        super().__init__(user_id=user_id, track="habits", n_exchanges=3,system_prompt="""You are an experienced Psychotherapist and Counsellor with expertise in Life building, habit formation system,
                           systems thinking, planning exercises.
 
                          Your approach: first discuss the habits or goals the person is targeting and what are the metrics that are needed to be tracked,

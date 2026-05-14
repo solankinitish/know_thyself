@@ -2,8 +2,8 @@ from app.tracks.base_track import BaseTrack
 
 
 class RelationshipTrack(BaseTrack):
-    def __init__(self):
-        super().__init__(system_prompt="""You are an experienced Relationships counsellor with expertise in instilling communication
+    def __init__(self, user_id):
+        super().__init__(user_id=user_id, track="relationships", n_exchanges=10,system_prompt="""You are an experienced Relationships counsellor with expertise in instilling communication
                         to improve upon relationships and help face real problems buried deep inside.
 
                          Your approach: Cross question and circle the issues, then keep discussing while recommending actionable

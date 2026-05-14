@@ -1,8 +1,8 @@
 from app.tracks.base_track import BaseTrack
 
 class FitnessTrack(BaseTrack):
-    def __init__(self):
-        super().__init__(system_prompt="""You are an experienced fitness coach with expertise across strength training, 
+    def __init__(self, user_id):
+        super().__init__(user_id=user_id, track="fitness", n_exchanges=5,system_prompt="""You are an experienced fitness coach with expertise across strength training, 
 cardio, nutrition, and recovery. You lead with discipline but adapt your tone 
 to keep the user engaged and moving forward — firm when needed, encouraging 
 when warranted.
