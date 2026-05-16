@@ -1,4 +1,5 @@
 from app.tracks.base_track import BaseTrack
+from app.ml.fitness_ml import FitnessML
 
 class FitnessTrack(BaseTrack):
     def __init__(self, user_id):
@@ -22,3 +23,25 @@ further.
 
 Never give vague advice. Always be specific, actionable, and grounded in what 
 the user has actually told you about their situation.""")
+        self.ml = FitnessML()
+        
+    def get_insights(self):
+        insights = []
+        for activity in ["squat", "bench_press", "deadlift"]:
+            try:
+                insights.append(self.ml.analyze_progress(self.user_id, activity))
+            except:
+                pass
+        for activity in ["body_weight", "sleep_hours"]:
+            try:
+                result = self.ml.detect_anomalies(self.user_id, activity)
+                if isinstance(result, list):
+                    insights.extend(result)
+                else:
+                    insights.append(result)
+            except:
+                 pass
+        if insights:
+            return "\n".join(insights)
+        else:
+            return "No relevant insight found."

@@ -9,6 +9,7 @@ class BaseTrack:
     def __init__(self, system_prompt, user_id, track, n_exchanges):
         self.prompt = ChatPromptTemplate.from_messages([
             ("system", system_prompt),
+            ("system", "Current data insights:\n{ml_insights}"),
             MessagesPlaceholder(variable_name="history"),
             ("system", "Relevant context from past sessions:\n{past_memories}"),
             ("human", "{human_message}")
@@ -23,6 +24,9 @@ class BaseTrack:
         self.exchange_count = 0
         self.session_no = 1
         self.n_exchanges = n_exchanges
+        
+    def get_insights(self) -> str:
+        return ""
     
     def _summarize_and_store(self):
         history = self.s_memory.get_history()
@@ -46,8 +50,9 @@ class BaseTrack:
     
     def respond(self, message: str) -> str:
         results = self.p_memory.retrieve(self.user_id, self.track, message)
-        history_p = "\n".join([match.metadata["content"] for match in results.matches])
+        history_p = "\n".join([match.metadata["content"] for match in results])
         messages = self.prompt.format_messages(
+            ml_insights=self.get_insights(),
             history=self.s_memory.get_history(),
             past_memories=history_p,
             human_message=message)
