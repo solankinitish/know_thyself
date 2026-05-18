@@ -1,10 +1,10 @@
-from app.ml.fitness_ml import FitnessML
+from app.ml.habits_ml import HabitsML
 
-ml = FitnessML()
+ml = HabitsML()
 
-print("=== Progress Analysis ===")
-print(ml.analyze_progress("rahul", "squat"))
+print("=== Cluster Habits ===")
+print(ml.cluster_habits("rahul"))
 
-print("\n=== Anomaly Detection ===")
-print(ml.detect_anomalies("rahul", "body_weight"))
-print(ml.detect_anomalies("rahul", "sleep_hours"))
+print("\n=== Streak Scores ===")
+for habit in ["gym", "reading", "medication", "hydration"]:
+    print(f"{habit}: {ml.streak_score('rahul', habit):.3f}")

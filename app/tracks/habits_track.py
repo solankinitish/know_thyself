@@ -1,7 +1,8 @@
 from app.tracks.base_track import BaseTrack
+from app.ml.habits_ml import HabitsML
 
 
-class HabitTrack(BaseTrack):
+class HabitsTrack(BaseTrack):
     def __init__(self, user_id):
         super().__init__(user_id=user_id, track="habits", n_exchanges=3,system_prompt="""You are an experienced Psychotherapist and Counsellor with expertise in Life building, habit formation system,
                           systems thinking, planning exercises.
@@ -18,3 +19,18 @@ class HabitTrack(BaseTrack):
                           and help him stick to the plan or bring a change if need be.
 
                          Never be too lenient in the approach. Always be more mechanical in your approach once the plan has been made.""")
+        self.ml = HabitsML()
+    
+    def get_insights(self):
+        insights = []
+        try:
+            habits, clusters = self.ml.cluster_habits(self.user_id)
+            for habit, label in clusters.items():
+                insights.append(f"{habit}: {label}")
+
+            for habit in habits:
+                score = self.ml.streak_score(self.user_id, habit)
+                insights.append(f"Streak of {habit} is {score:.2f}.")
+        except:
+            pass
+        return "\n".join(insights) if insights else ""

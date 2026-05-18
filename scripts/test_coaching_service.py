@@ -1,9 +1,9 @@
-from app.tracks.fitness_track import FitnessTrack
+from app.tracks.habits_track import HabitsTrack
 
-coach = FitnessTrack(user_id="rahul")
+coach = HabitsTrack(user_id="rahul")
 
-print("Insights being rejected:")
+print("=== Insights ===")
 print(coach.get_insights())
 
 print("\n=== Coaching Response ===")
-print(coach.respond("How is my training progressing?"))
+print(coach.respond("How are my habits looking?"))
