@@ -1,18 +1,17 @@
-import os
 import numpy as np
-from dotenv import load_dotenv
 from sentence_transformers import SentenceTransformer
 from pinecone import Pinecone
+from app.utils.config import settings
+from app.utils.logger import get_logger
 
-load_dotenv()
 
 class PersistentMemory:
     def __init__(self):
+        self.logger = get_logger(__name__)
         self.model = SentenceTransformer('all-MiniLM-L6-v2')
-        self.api_key = os.getenv("PINECONE_API_KEY")
-        if not self.api_key:
+        if not settings.memory_api_key:
             raise ValueError("PINECONE_API_KEY not found in environment variables")
-        pc = Pinecone(api_key=self.api_key)
+        pc = Pinecone(api_key=settings.memory_api_key)
         self.index = pc.Index("knowthyself")
     
     def store(self, user_id, track, session_no, memory_type, content):
@@ -32,9 +31,11 @@ class PersistentMemory:
                 ({"id": unique_id, "values": embeddings, "metadata": metadata})
             ]
         )
+        self.logger.info("Memory Stored.")
 
     def retrieve(self, user_id, track, query, top_k=3):
         embeddings = self.model.encode(query).tolist()
+        self.logger.info("Query Embedded.")
 
         results = self.index.query(
             vector=embeddings,
@@ -57,9 +58,12 @@ class PersistentMemory:
         sorted_matches = sorted(scored_matches, key=lambda x: x[0], reverse=True)
         top_matches = [match for score, match in sorted_matches[:top_k]]
 
+        self.logger.info(f"{len(top_matches)} results received.")
+
         return top_matches
 
     def get_session_history(self, user_id, track):
+        self.logger.info(f"{user_id} on {track} track.")
         vector = np.zeros(384).tolist()
         results = self.index.query(
             vector=vector,

@@ -3,10 +3,13 @@ from app.llm.llm_client import LLMClient
 from app.memory.session_memory import SessionMemory
 from app.memory.persistent_memory import PersistentMemory
 from app.prompts.summary_prompts import SummaryPrompts
+from app.utils.logger import get_logger
 
 
 class BaseTrack:
     def __init__(self, system_prompt, user_id, track, n_exchanges):
+        self.logger = get_logger(__name__)
+        self.logger.info(f"Track initialized for {user_id} on {track} track.")
         self.prompt = ChatPromptTemplate.from_messages([
             ("system", system_prompt),
             ("system", "Current data insights:\n{ml_insights}"),
@@ -45,10 +48,12 @@ class BaseTrack:
             memory_type="session_summary",
             content=summary
         )
+        self.logger.info(f"Summarizing session {self.session_no} for {self.user_id}.")
         self.exchange_count = 0
         self.session_no += 1
     
     def respond(self, message: str) -> str:
+        self.logger.info(f"Message received: {message[:50]}")
         results = self.p_memory.retrieve(self.user_id, self.track, message)
         history_p = "\n".join([match.metadata["content"] for match in results])
         self.current_message = message
@@ -63,4 +68,5 @@ class BaseTrack:
         if self.exchange_count == self.n_exchanges:
             self._summarize_and_store()
 
+        self.logger.info(f"Response generated.")
         return response
