@@ -6,7 +6,6 @@ from pinecone import Pinecone
 
 load_dotenv()
 
-
 class PersistentMemory:
     def __init__(self):
         self.model = SentenceTransformer('all-MiniLM-L6-v2')

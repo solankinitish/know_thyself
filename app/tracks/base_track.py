@@ -51,6 +51,7 @@ class BaseTrack:
     def respond(self, message: str) -> str:
         results = self.p_memory.retrieve(self.user_id, self.track, message)
         history_p = "\n".join([match.metadata["content"] for match in results])
+        self.current_message = message
         messages = self.prompt.format_messages(
             ml_insights=self.get_insights(),
             history=self.s_memory.get_history(),

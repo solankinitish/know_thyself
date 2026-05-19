@@ -1,7 +1,8 @@
 from app.tracks.base_track import BaseTrack
+from app.ml.relationships_ml import RelationshipsML
 
 
-class RelationshipTrack(BaseTrack):
+class RelationshipsTrack(BaseTrack):
     def __init__(self, user_id):
         super().__init__(user_id=user_id, track="relationships", n_exchanges=10,system_prompt="""You are an experienced Relationships counsellor with expertise in instilling communication
                         to improve upon relationships and help face real problems buried deep inside.
@@ -19,3 +20,22 @@ class RelationshipTrack(BaseTrack):
                         you don't lecture - you understand the situation and discuss further.
 
                          Never be too judgmental.""")
+        
+        self.ml = RelationshipsML()
+    
+    def get_insights(self):
+        results = self.p_memory.get_session_history(self.user_id, self.track)
+        memories = [match.metadata["content"] for match in results.matches]
+        current_message = getattr(self, "current_message", "")
+
+        insights = []
+        try:
+            sentiments = self.ml.sentiment_trend(memories)
+            for session, label, score in sentiments:
+                insights.append(f"Session {session}: {label} ({score:.2f})")
+            check = self.ml.similarity_check(memories, current_message)
+            if check:
+                insights.append(f"Most relevant past issue: {check[:150]}...")
+        except:
+            pass
+        return "\n".join(insights)
