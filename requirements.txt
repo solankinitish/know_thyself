@@ -54,10 +54,11 @@ numpy==1.26.4
 ollama==0.6.2
 openai==2.36.0
 orjson==3.11.5
-packaging==25.0
+packaging==24.2
 pandas==2.3.3
 pillow==11.3.0
-pinecone-client==6.0.0
+pinecone==7.3.0
+pinecone-plugin-assistant==1.8.0
 pinecone-plugin-interface==0.0.7
 propcache==0.4.1
 protobuf==6.33.6
