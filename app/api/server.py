@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi import HTTPException
 from pydantic import BaseModel
 from app.services.coaching_service import CoachingService
 
@@ -18,8 +19,11 @@ class UserRequest(BaseModel):
 
 @ app.post("/user")
 def register_user(request: UserRequest):
-    service.get_coach(request.user_id, request.track)
-    return {"status": "registered", "user_id": request.user_id, "track": request.track}
+    try:
+        service.get_coach(request.user_id, request.track)
+        return {"status": "registered", "user_id": request.user_id, "track": request.track}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 # Chat Request class and post request
@@ -30,8 +34,11 @@ class ChatRequest(BaseModel):
 
 @app.post("/chat")
 def chat(request: ChatRequest):
-    response = service.chat(request.user_id, request.track, request.message)
-    return {"response": response}
+    try:
+        response = service.chat(request.user_id, request.track, request.message)
+        return {"response": response}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 
 # Data Request class and post requests
@@ -42,10 +49,17 @@ class DataRequest(BaseModel):
 
 @app.post("/data/fitness")
 def fitness_data(request: DataRequest):
-    service.log_fitness(request.user_id, request.data)
-    return {"status": "logged"}
+    try:
+        service.log_fitness(request.user_id, request.data)
+        return {"status": "logged"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 
 @app.post("/data/habits")
 def habits_data(request: DataRequest):
-    service.log_habits(request.user_id, request.data)
-    return {"status": "logged"}
+    try:
+        service.log_habits(request.user_id, request.data)
+        return {"status": "logged"}
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))

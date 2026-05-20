@@ -20,8 +20,13 @@ class LLMClient:
         )
     
     def chat(self, message: str) -> str:
-        response = self.chain.invoke({"user_message": message})
-        return response.content
+        try:
+            response = self.groq.invoke([{"role": "user", "content": message}])
+            return response.content
+        except Exception as e:
+            self.logger.info(f"Groq failed in chat: {e}, falling back to Ollama.")
+            response = self.chain.invoke({"user_message": message})
+            return response.content
     
     def generate(self, messages: list) -> str:
         try:

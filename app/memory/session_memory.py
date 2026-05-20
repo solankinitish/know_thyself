@@ -1,3 +1,6 @@
+import warnings
+from langchain._api import LangChainDeprecationWarning
+warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
 from langchain.memory import ConversationSummaryBufferMemory
 from langchain_ollama import ChatOllama
 
