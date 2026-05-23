@@ -5,11 +5,14 @@ import pandas as pd
 
 st.set_page_config(page_title="KnowThyself", page_icon="🧠", layout="centered")
 
-API_URL = "http://localhost:8000"
+# API_URL = "http://localhost:8000"
+
+# Read the backend URL from environment variables if running in Docker, otherwise fallback to localhost
+API_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 def show_login():
     st.title("KnowThyself")
-    name = st.text_input("Enter you User ID")
+    name = st.text_input("Enter your User ID")
     if st.button("Submit"):
         if name:
             st.session_state.user_id = name
@@ -36,7 +39,7 @@ def show_data_form():
     if "form_key" not in st.session_state:
         st.session_state.form_key = 0
     if st.session_state.track.lower() == "fitness":
-        with st.form("Fitness Data {st.session_state.form_key}"):
+        with st.form(f"Fitness Data {st.session_state.form_key}"):
             date = st.date_input("Date")
             exercise = st.selectbox("Exercise", ["Squat", "Deadlift", "Bench Press", "Pull up", "Other"])
             sets = st.number_input("Sets", min_value=0, step=1, format="%d", value=None, placeholder="0")
@@ -84,9 +87,9 @@ def show_data_form():
                 habit = habit_choice
         else:
             habit = st.text_input("Habit")
-        with st.form("Habits Data {st.session_state.form_key}"):
+        with st.form(f"Habits Data {st.session_state.form_key}"):
             date = st.date_input("Date")
-            completed = st.number_input("Completed (0 or 1)", min_value=0, max_value=1, step=1, format="%d")
+            completed = st.number_input("Completed (0 or 1)", min_value=0, max_value=1, step=1, format="%d", value=None, placeholder="0")
             score = st.number_input("Score (0-10)", min_value=0, max_value=10, step=1, format="%d", value=None, placeholder="0")
             notes = st.text_input("Notes")
             submitted = st.form_submit_button("Submit")

@@ -3,6 +3,7 @@ from app.tracks.habits_track import HabitsTrack
 from app.tracks.relationships_track import RelationshipsTrack
 from app.utils.logger import get_logger
 import pandas as pd
+import os
 
 
 class CoachingService:
@@ -39,8 +40,16 @@ class CoachingService:
             raise ValueError("user_id is blank.")
         if not data:
             raise ValueError("Data is empty.")
+        
         df = pd.DataFrame([data])
-        df.to_csv(f"data/fitness/{user_id}.csv", mode="a", index=False, header=False, lineterminator="\n")
+
+        target_dir = os.path.join("data", "fitness")
+        os.makedirs(target_dir, exist_ok=True)
+
+        file_path = os.path.join(target_dir, f"{user_id}.csv")
+
+
+        df.to_csv(file_path, mode="a", index=False, header=not os.path.exists(file_path), lineterminator="\n")
         self.logger.info(f"Data logged for {user_id}.")
 
     def log_habits(self, user_id, data):
@@ -48,6 +57,13 @@ class CoachingService:
             raise ValueError("user_id is blank.")
         if not data:
             raise ValueError("Data is empty.")
+        
         df = pd.DataFrame([data])
-        df.to_csv(f"data/habits/{user_id}.csv", mode="a", index=False, header=False, lineterminator="\n")
+
+        target_dir = os.path.join("data", "habits")
+        os.makedirs(target_dir, exist_ok=True)
+
+        file_path = os.path.join(target_dir, f"{user_id}.csv")
+
+        df.to_csv(file_path, mode="a", index=False, header=not os.path.exists(file_path), lineterminator="\n")
         self.logger.info(f"Data logged for {user_id}.")
