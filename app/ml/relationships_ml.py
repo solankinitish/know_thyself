@@ -5,8 +5,23 @@ import numpy as np
 
 class RelationshipsML:
     def __init__(self):
-        self.sentiment = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
-        self.model = SentenceTransformer("all-MiniLM-L6-v2")
+        # self.sentiment = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+        # self.model = SentenceTransformer("all-MiniLM-L6-v2")
+        self._sentiment = None
+        self._model = None
+    
+    @property
+    def sentiment(self):
+        if self._sentiment is None:
+            self._sentiment = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+        return self._sentiment
+    
+    @property
+    def model(self):
+        if self._model is None:
+            self._model = SentenceTransformer("all-MiniLM-L6-v2")
+        return self._model
+
     
     def sentiment_trend(self, memories: list) -> str:
         sentiments = []

@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   # --- BACKEND SERVICE ---
@@ -12,10 +12,11 @@ services:
     env_file:
       - .env
     environment:
-      - PYTHONPATH=/workspace  # <--- ADD THIS LINE
+      - PYTHONPATH=/workspace
     volumes:
       - ./app:/workspace/app
       - ./main.py:/workspace/main.py
+      - ./data:/workspace/data
     restart: always
 
   # --- FRONTEND SERVICE ---

@@ -31,9 +31,8 @@ COPY streamlit_app.py .
 # Stage 2: The Backend Runtime
 # ==========================================
 FROM base AS backend
-EXPOSE 8000
-# Tell the container to start your FastAPI app when it boots up
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8080
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
 
 # ==========================================
 # Stage 3: The Frontend Runtime

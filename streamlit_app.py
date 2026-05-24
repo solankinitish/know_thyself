@@ -8,7 +8,9 @@ st.set_page_config(page_title="KnowThyself", page_icon="🧠", layout="centered"
 # API_URL = "http://localhost:8000"
 
 # Read the backend URL from environment variables if running in Docker, otherwise fallback to localhost
-API_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+# API_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
+
+API_URL = os.getenv("BACKEND_URL", "https://knowthyself-backend-799604771720.us-central1.run.app")
 
 def show_login():
     st.title("KnowThyself")

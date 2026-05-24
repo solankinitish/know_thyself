@@ -8,11 +8,18 @@ from app.utils.logger import get_logger
 class PersistentMemory:
     def __init__(self):
         self.logger = get_logger(__name__)
-        self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        # self.model = SentenceTransformer('all-MiniLM-L6-v2')
+        self._model = None
         if not settings.memory_api_key:
             raise ValueError("PINECONE_API_KEY not found in environment variables")
         pc = Pinecone(api_key=settings.memory_api_key)
         self.index = pc.Index("knowthyself")
+
+    @property
+    def model(self):
+        if self._model is None:
+            self._model = SentenceTransformer("all-MiniLM-L6-v2")
+        return self._model
     
     def store(self, user_id, track, session_no, memory_type, content):
         if not content or not content.strip():
