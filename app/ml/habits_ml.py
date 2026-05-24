@@ -1,6 +1,7 @@
 from sklearn.cluster import KMeans
 import pandas as pd
 import numpy as np
+from app.utils.config import settings
 
 
 class HabitsML:
@@ -8,7 +9,7 @@ class HabitsML:
         self.model = KMeans(n_clusters=3)
 
     def cluster_habits(self, user_id):
-        df = pd.read_csv(f"data/habits/{user_id}.csv", skipinitialspace=True)
+        df = pd.read_csv(f"gs://{settings.gcs_bucket}/habits/{user_id}.csv", skipinitialspace=True, on_bad_lines='skip')
 
         habits = df["habit"].unique()
 
@@ -43,7 +44,7 @@ class HabitsML:
         return habits, result
 
     def streak_score(self, user_id, habit):
-        df = pd.read_csv(f"data/habits/{user_id}.csv", skipinitialspace=True)
+        df = pd.read_csv(f"gs://{settings.gcs_bucket}/habits/{user_id}.csv", skipinitialspace=True, on_bad_lines='skip')
         
         df_habit = df[df["habit"] == habit].copy()
         df_habit["date"] = pd.to_datetime(df_habit["date"])

@@ -11,6 +11,7 @@ st.set_page_config(page_title="KnowThyself", page_icon="🧠", layout="centered"
 # API_URL = os.getenv("BACKEND_URL", "http://localhost:8000")
 
 API_URL = os.getenv("BACKEND_URL", "https://knowthyself-backend-799604771720.us-central1.run.app")
+GCS_BUCKET = os.getenv("GCS_BUCKET", "knowthyself-data")
 
 def show_login():
     st.title("KnowThyself")
@@ -77,8 +78,8 @@ def show_data_form():
     if st.session_state.track.lower() == "habits":
         
         # Try to read existing habits
-        csv_path = f"data/habits/{st.session_state.user_id}.csv"
-        if os.path.exists(csv_path):
+        csv_path = f"gs://{GCS_BUCKET}/habits/{st.session_state.user_id}.csv"
+        try:
             df = pd.read_csv(csv_path, skipinitialspace=True, on_bad_lines='skip')
             existing_habits = df["habit"].unique().tolist()
             existing_habits.append("Add new habit")
@@ -87,8 +88,9 @@ def show_data_form():
                 habit = st.text_input("Enter new habit name")
             else:
                 habit = habit_choice
-        else:
+        except Exception:
             habit = st.text_input("Habit")
+            
         with st.form(f"Habits Data {st.session_state.form_key}"):
             date = st.date_input("Date")
             completed = st.number_input("Completed (0 or 1)", min_value=0, max_value=1, step=1, format="%d", value=None, placeholder="0")

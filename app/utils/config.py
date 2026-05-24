@@ -11,6 +11,7 @@ class Settings:
         self.memory_api_key = os.getenv("PINECONE_API_KEY")
         self.llm_api_key = os.getenv("GROQ_API_KEY")
         self.llm_provider = os.getenv("LLM_PROVIDER", "groq")
+        self.gcs_bucket = os.getenv("GCS_BUCKET", "knowthyself-data")
 
 
 settings = Settings()

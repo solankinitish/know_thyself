@@ -24,9 +24,12 @@ class LLMClient:
             response = self.groq.invoke([{"role": "user", "content": message}])
             return response.content
         except Exception as e:
-            self.logger.info(f"Groq failed in chat: {e}, falling back to Ollama.")
-            response = self.chain.invoke({"user_message": message})
-            return response.content
+            self.logger.info(f"Groq failed in chat: {e}")
+            try:
+                response = self.chain.invoke({"user_message": message})
+                return response.content
+            except:
+                raise ValueError("LLM unavailable. Please try again.")
     
     def generate(self, messages: list) -> str:
         try:
@@ -37,6 +40,11 @@ class LLMClient:
             self.logger.info(f"Tokens - Input: {usage.get('prompt_tokens', 0)}, Output: {usage.get('completion_tokens', 0)}")
             return response.content
         except Exception as e:
-            self.logger.info(f"Groq failed: {e}, falling back to Ollama.")
-            response = self.llm.invoke(messages)
-        return response.content
+            self.logger.info(f"Groq failed: {e}")
+            try:
+                response = self.llm.invoke(messages)
+                self.logger.info(f"Response from Ollama fallback.")
+                return response.content
+            except Exception:
+                raise ValueError("LLM unavailable. Please try again.")
+    

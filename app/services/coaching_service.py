@@ -2,6 +2,7 @@ from app.tracks.fitness_track import FitnessTrack
 from app.tracks.habits_track import HabitsTrack
 from app.tracks.relationships_track import RelationshipsTrack
 from app.utils.logger import get_logger
+from app.utils.config import settings
 import pandas as pd
 import os
 
@@ -41,15 +42,15 @@ class CoachingService:
         if not data:
             raise ValueError("Data is empty.")
         
-        df = pd.DataFrame([data])
+        gcs_path = f"gs://{settings.gcs_bucket}/fitness/{user_id}.csv"
 
-        target_dir = os.path.join("data", "fitness")
-        os.makedirs(target_dir, exist_ok=True)
-
-        file_path = os.path.join(target_dir, f"{user_id}.csv")
-
-
-        df.to_csv(file_path, mode="a", index=False, header=not os.path.exists(file_path), lineterminator="\n")
+        try:
+            existing_df = pd.read_csv(gcs_path)
+            df = pd.concat([existing_df, pd.DataFrame([data])], ignore_index=True)
+        except FileNotFoundError:
+            df = pd.DataFrame([data])
+        
+        df.to_csv(gcs_path, index=False)
         self.logger.info(f"Data logged for {user_id}.")
 
     def log_habits(self, user_id, data):
@@ -58,12 +59,13 @@ class CoachingService:
         if not data:
             raise ValueError("Data is empty.")
         
-        df = pd.DataFrame([data])
+        gcs_path = f"gs://{settings.gcs_bucket}/habits/{user_id}.csv"
 
-        target_dir = os.path.join("data", "habits")
-        os.makedirs(target_dir, exist_ok=True)
-
-        file_path = os.path.join(target_dir, f"{user_id}.csv")
-
-        df.to_csv(file_path, mode="a", index=False, header=not os.path.exists(file_path), lineterminator="\n")
+        try:
+            existing_df = pd.read_csv(gcs_path)
+            df = pd.concat([existing_df, pd.DataFrame([data])], ignore_index=True)
+        except FileNotFoundError:
+            df = pd.DataFrame([data])
+        
+        df.to_csv(gcs_path, index=False)
         self.logger.info(f"Data logged for {user_id}.")

@@ -38,7 +38,8 @@ def chat(request: ChatRequest):
         response = service.chat(request.user_id, request.track, request.message)
         return {"response": response}
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        status = 503 if "LLM unavailable" in str(e) else 400
+        raise HTTPException(status_code=status, detail=str(e))
 
 
 # Data Request class and post requests
