@@ -4,7 +4,6 @@ from app.tracks.relationships_track import RelationshipsTrack
 from app.utils.logger import get_logger
 from app.utils.config import settings
 import pandas as pd
-import os
 
 
 class CoachingService:
