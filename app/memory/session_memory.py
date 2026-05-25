@@ -2,12 +2,16 @@ import warnings
 from langchain._api import LangChainDeprecationWarning
 warnings.filterwarnings("ignore", category=LangChainDeprecationWarning)
 from langchain.memory import ConversationSummaryBufferMemory
-from langchain_ollama import ChatOllama
+from langchain_groq import ChatGroq
+from app.utils.config import settings
 
 
 class SessionMemory:
     def __init__(self, max_token_limit=1000):
-        self.llm = ChatOllama(model="mistral")
+        self.llm = ChatGroq(
+            api_key=settings.llm_api_key,
+            model="llama-3.1-8b-instant"
+        )
         self.memory = ConversationSummaryBufferMemory(
             llm=self.llm,
             max_token_limit=max_token_limit,

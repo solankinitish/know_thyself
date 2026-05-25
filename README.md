@@ -128,15 +128,17 @@ Persistent Memory (Pinecone)
 
 ## Evaluation
 
-5 user journeys tested end to end:
+5 tests run against live Cloud Run backend (`python -m scripts.evaluate`):
 
-| User | Track | Sessions | ML Insights Active | Result |
-|---|---|---|---|---|
-| rahul | Fitness | 15 | Squat progression + sleep anomaly | PASS ✅ |
-| nitish | Habits | 10 | Hydration high, meditation low | PASS ✅ |
-| rahul | Relationships | 2 | Sentiment NEGATIVE → POSITIVE | PASS ✅ |
-| nitish | Fitness | 5 | Deadlift slope + body weight trend | PASS ✅ |
-| rahul | Habits | 8 | Streak decay + K-Means clustering | PASS ✅ |
+| Test | What it validates | Result |
+|---|---|---|
+| test_health | Backend live and responding on Cloud Run | PASS ✅ |
+| test_user_registration | User registration and track selection via API | PASS ✅ |
+| test_chat | End-to-end coaching response — Pinecone + ML + Groq | PASS ✅ |
+| test_data_logging | Fitness data logging to Google Cloud Storage | PASS ✅ |
+| test_summarization | Auto-summarization triggers after n_exchanges | PASS ✅ |
+
+**Score: 5/5**
 
 ---
 
