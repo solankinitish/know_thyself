@@ -31,8 +31,9 @@ COPY streamlit_app.py .
 # Stage 2: The Backend Runtime
 # ==========================================
 FROM base AS backend
+RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('all-MiniLM-L6-v2')"
 EXPOSE 8080
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
 
 # ==========================================
 # Stage 3: The Frontend Runtime
