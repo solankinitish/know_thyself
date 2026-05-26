@@ -34,6 +34,7 @@ It remembers who you are across sessions, ingests your structured data, runs cla
 - **Lazy model loading** — ML models load on first use, not on startup — Cloud Run compatible
 - **GCS data persistence** — workout and habit CSVs survive container restarts
 - **Streamlit frontend** — login, track selection, chat interface, tabular data entry forms
+- **Domain grounding** — each coach stays strictly within its track; off-topic questions redirected to coaching goals
 
 ---
 
@@ -236,8 +237,6 @@ knowthyself/
 ## Known Limitations
 
 - **Heavy image (1.81GB)** — torch + distilBERT + SentenceTransformer; lighter sentiment library would reduce significantly
-- **No grounding enforcement** — coach can drift outside track domain; strict prompt constraints planned
-- **Cold starts** — first request triggers lazy model loading (~60-90s); minimum instance=1 fix planned
 - **No authentication** — user_id is a plain string; JWT auth needed for production
 - **ConversationSummaryBufferMemory deprecated** — LangChain migration to RunnableWithMessageHistory deferred
 - **CSV persistence local vs cloud** — local Docker uses volume mount, cloud uses GCS; unification planned

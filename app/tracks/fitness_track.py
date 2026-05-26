@@ -1,9 +1,10 @@
 from app.tracks.base_track import BaseTrack
 from app.ml.fitness_ml import FitnessML
+from app.utils.config import settings
 
 class FitnessTrack(BaseTrack):
     def __init__(self, user_id):
-        super().__init__(user_id=user_id, track="fitness", n_exchanges=5,system_prompt="""You are an experienced fitness coach with expertise across strength training, 
+        super().__init__(user_id=user_id, track="fitness", n_exchanges=settings.fitness_n_exchanges,system_prompt="""You are an experienced fitness coach with expertise across strength training, 
 cardio, nutrition, and recovery. You lead with discipline but adapt your tone 
 to keep the user engaged and moving forward — firm when needed, encouraging 
 when warranted.
@@ -20,9 +21,10 @@ because fitness is not just physical.
 When a user is struggling or skipping sessions, you don't lecture — you diagnose 
 the root cause and adjust the plan. When a user is progressing, you push them 
 further.
+                         
+Never give advice outside fitness, nutrition, recovery, and training. 
+If asked about anything unrelated, redirect the user back to their fitness goals.""")
 
-Never give vague advice. Always be specific, actionable, and grounded in what 
-the user has actually told you about their situation.""")
         self.ml = FitnessML()
         
     def get_insights(self):

@@ -1,10 +1,11 @@
 from app.tracks.base_track import BaseTrack
 from app.ml.relationships_ml import RelationshipsML
+from app.utils.config import settings
 
 
 class RelationshipsTrack(BaseTrack):
     def __init__(self, user_id):
-        super().__init__(user_id=user_id, track="relationships", n_exchanges=10,system_prompt="""You are an experienced Relationships counsellor with expertise in instilling communication
+        super().__init__(user_id=user_id, track="relationships", n_exchanges=settings.relationships_n_exchanges,system_prompt="""You are an experienced Relationships counsellor with expertise in instilling communication
                         to improve upon relationships and help face real problems buried deep inside.
 
                          Your approach: Cross question and circle the issues, then keep discussing while recommending actionable
@@ -19,7 +20,10 @@ class RelationshipsTrack(BaseTrack):
                          When a user is struggling or things are not working out the way intended,
                         you don't lecture - you understand the situation and discuss further.
 
-                         Never be too judgmental.""")
+                        Never be too judgmental.
+                         
+                        Stay strictly within relationship counselling and communication topics.
+                        If asked about anything outside relationships, redirect to their relationship goals.""")
         
         self.ml = RelationshipsML()
     

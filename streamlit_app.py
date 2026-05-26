@@ -53,27 +53,30 @@ def show_data_form():
             energy_level = st.number_input("Energy level (0-10)", min_value=0, max_value=10, step=1, format="%d", value=None, placeholder="0")
             submitted = st.form_submit_button("Submit")
             if submitted:
-                data = {
-                    "date": str(date),
-                    "exercise": exercise,
-                    "sets": sets,
-                    "reps": reps,
-                    "weight_kg": weight_kg,
-                    "body_weight": body_weight,
-                    "sleep_hours": sleep_hours,
-                    "energy_level": energy_level
-                }
-                response = requests.post(f"{API_URL}/data/fitness", json={
-                    "user_id": st.session_state.user_id,
-                    "track": st.session_state.track.lower(),
-                    "data": data
-                })
-                if response.status_code == 200:
-                    st.session_state.data_logged = True
-                    st.session_state.form_key += 1
-                    st.rerun()
+                if not date or sets == 0 or reps == 0 or weight_kg == 0.0 or body_weight == 0.0:
+                    st.error("Please fill all required fields.")
                 else:
-                    st.error("Failed to log data.")
+                    data = {
+                        "date": str(date),
+                        "exercise": exercise,
+                        "sets": sets,
+                        "reps": reps,
+                        "weight_kg": weight_kg,
+                        "body_weight": body_weight,
+                        "sleep_hours": sleep_hours,
+                        "energy_level": energy_level
+                    }
+                    response = requests.post(f"{API_URL}/data/fitness", json={
+                        "user_id": st.session_state.user_id,
+                        "track": st.session_state.track.lower(),
+                        "data": data
+                    })
+                    if response.status_code == 200:
+                        st.session_state.data_logged = True
+                        st.session_state.form_key += 1
+                        st.rerun()
+                    else:
+                        st.error("Failed to log data.")
 
     if st.session_state.track.lower() == "habits":
         
@@ -98,23 +101,26 @@ def show_data_form():
             notes = st.text_input("Notes")
             submitted = st.form_submit_button("Submit")
             if submitted:
-                data = {"date": str(date),
-                        "habit": habit,
-                        "completed": completed, 
-                        "score": score, 
-                        "notes": notes
-                    }
-                response = requests.post(f"{API_URL}/data/habits", json={
-                    "user_id": st.session_state.user_id,
-                    "track": st.session_state.track.lower(),
-                    "data": data
-                })
-                if response.status_code == 200:
-                    st.session_state.data_logged = True
-                    st.session_state.form_key += 1
-                    st.rerun()
+                if not date or not habit or completed is None:
+                    st.error("Please fill all required fields.")
                 else:
-                    st.error("Failed to log data.")
+                    data = {"date": str(date),
+                            "habit": habit,
+                            "completed": completed, 
+                            "score": score, 
+                            "notes": notes
+                        }
+                    response = requests.post(f"{API_URL}/data/habits", json={
+                        "user_id": st.session_state.user_id,
+                        "track": st.session_state.track.lower(),
+                        "data": data
+                    })
+                    if response.status_code == 200:
+                        st.session_state.data_logged = True
+                        st.session_state.form_key += 1
+                        st.rerun()
+                    else:
+                        st.error("Failed to log data.")
 
 
 def show_coaching():

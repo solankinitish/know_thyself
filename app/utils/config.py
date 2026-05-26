@@ -13,5 +13,9 @@ class Settings:
         self.llm_provider = os.getenv("LLM_PROVIDER", "groq")
         self.gcs_bucket = os.getenv("GCS_BUCKET", "knowthyself-data")
 
+        self.fitness_n_exchanges = int(os.getenv("FITNESS_N_EXCHANGES", 5))
+        self.habits_n_exchanges = int(os.getenv("HABITS_N_EXCHANGES", 3))
+        self.relationships_n_exchanges = int(os.getenv("RELATIONSHIPS_N_EXCHANGES", 10))
+
 
 settings = Settings()

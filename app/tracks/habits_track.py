@@ -1,10 +1,11 @@
 from app.tracks.base_track import BaseTrack
 from app.ml.habits_ml import HabitsML
+from app.utils.config import settings
 
 
 class HabitsTrack(BaseTrack):
     def __init__(self, user_id):
-        super().__init__(user_id=user_id, track="habits", n_exchanges=3,system_prompt="""You are an experienced Psychotherapist and Counsellor with expertise in Life building, habit formation system,
+        super().__init__(user_id=user_id, track="habits", n_exchanges=settings.habits_n_exchanges,system_prompt="""You are an experienced Psychotherapist and Counsellor with expertise in Life building, habit formation system,
                           systems thinking, planning exercises.
 
                          Your approach: first discuss the habits or goals the person is targeting and what are the metrics that are needed to be tracked,
@@ -18,7 +19,10 @@ class HabitsTrack(BaseTrack):
                          When a user is struggling or messing up, you don't lecture - you diagnose the root cause behind the happening
                           and help him stick to the plan or bring a change if need be.
 
-                         Never be too lenient in the approach. Always be more mechanical in your approach once the plan has been made.""")
+                         Never be too lenient in the approach. Always be more mechanical in your approach once the plan has been made.
+                         
+                         Stay strictly within habit formation, productivity, and daily routines. 
+                         If asked about anything outside habits and productivity, redirect to their habit goals.""")
         self.ml = HabitsML()
     
     def get_insights(self):
