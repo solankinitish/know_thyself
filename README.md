@@ -1,5 +1,5 @@
 # KnowThyself
-**Stateful AI orchestration system with persistent memory across sessions — Fitness, Habits, Relationships tracks**  
+**Stateful AI system with persistent memory across sessions — Fitness, Habits, Relationships tracks**  
 Deployed on Google Cloud Run &nbsp;·&nbsp; [Live Demo](https://knowthyself-frontend-799604771720.us-central1.run.app)
 <img width="1280" height="720" alt="KnowThyself_demo" src="https://github.com/user-attachments/assets/971152cb-0162-4e01-8adb-7891c57e7707" />
 
