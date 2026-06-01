@@ -1,4 +1,6 @@
 # KnowThyself
+> Stateful AI coaching system with persistent memory across sessions — Fitness, Habits, Relationships tracks
+> Deployed on Google Cloud Run · Live Demo: [link]
 <img width="1280" height="720" alt="KnowThyself_demo" src="https://github.com/user-attachments/assets/971152cb-0162-4e01-8adb-7891c57e7707" />
 
 
