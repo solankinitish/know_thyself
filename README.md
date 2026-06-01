@@ -1,4 +1,6 @@
 # KnowThyself
+<img width="800" height="450" alt="KnowThyself_demo" src="https://github.com/user-attachments/assets/cdc04ef9-b3e7-4b54-bedd-32bb39cb156f" />
+
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
